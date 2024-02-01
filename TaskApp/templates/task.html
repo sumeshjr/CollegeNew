@@ -104,11 +104,17 @@
                   ><i class="fa fa-linkedin"></i
                 ></a>
               </li>
-               <li>
-                   <a href="https://www.instagram.com/sswspectra_mcka?igsh=MXB5cGt1c3oyMGFtMw==">
-            <img style="height: 40px; width: 70px; " src="{% static 'images/output_image.jpeg' %}" alt="Image 1 description">
-          </a>
-          </li>
+              <li>
+                <a
+                  href="https://www.instagram.com/sswspectra_mcka?igsh=MXB5cGt1c3oyMGFtMw=="
+                >
+                  <img
+                    style="height: 40px; width: 70px"
+                    src="{% static 'images/output_image.jpeg' %}"
+                    alt="Image 1 description"
+                  />
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -150,18 +156,56 @@
     </style>
 
     <!-- ***** Header Area Start ***** -->
-    <header
-      class="header-area header-sticky wow slideInDown"
-      data-wow-duration="0.75s"
-      data-wow-delay="0s"
-    >
+    <style>
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f1f1f1;
+        padding: 10px;
+      }
+
+      .main-nav {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+      }
+
+      .logo img {
+        height: 60px;
+        width: 100px;
+      }
+
+      .main-nav ul {
+        list-style: none;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        margin-top: 5px;
+      }
+
+      .main-nav li {
+        margin-left: 40px; /* Adjust spacing between menu items */
+      }
+
+      .logo img {
+        height: 60px;
+        width: 100px;
+      }
+    </style>
+    <!-- ***** Header Area Start ***** -->
+    <header class="header" data-wow-duration="0.75s" data-wow-delay="0s">
       <div class="container">
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 col-sm-12 col-md-12">
             <nav class="main-nav">
               <!-- ***** Logo Start ***** -->
               <a href="/" class="logo">
-                <img style="height: 60px; width: 100px;" src="{% static 'images/sdg2.png' %}" alt="" />
+                <img
+                  style="height: 60px; width: 100px"
+                  src="{% static 'images/sdg2.png' %}"
+                  alt=""
+                />
               </a>
               <!-- ***** Logo End ***** -->
               <!-- ***** Menu Start ***** -->
@@ -181,15 +225,21 @@
                 <li class="scroll-to-section">
                   <a href="/completed_goals">Completed Goals</a>
                 </li>
+
+                <li class="scroll-to-section">
+                  <a href="/update_password">Change Password</a>
+                </li>
                 {% endif %}
 
                 <li class="scroll-to-section">
                   <a href="/contact">Contact</a>
                 </li>
+
                 {% if user.is_authenticated %}
+
                 <li class="scroll-to-section">
                   <div class="border-first-button">
-                    <a href="/signout">Logout</a>
+                    <a href="/signout">Logout </a>
                   </div>
                 </li>
                 {% else %}
@@ -200,9 +250,7 @@
                 </li>
                 {% endif %}
               </ul>
-              <a class="menu-trigger">
-                <span>Menu</span>
-              </a>
+
               <!-- ***** Menu End ***** -->
             </nav>
           </div>

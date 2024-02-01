@@ -17,7 +17,7 @@
       rel="stylesheet"
     />
 
-    <title>EcoPixel</title>
+    <title>SDG Quest</title>
 
     <link
       rel="stylesheet"
@@ -107,16 +107,55 @@
     </div>
     <br>
     <!-- Pre-header End -->
+<style>
+   .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f1f1f1;
+    padding: 10px;
+  }
 
+  .main-nav {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+  }
+
+  .logo img {
+    height: 60px;
+    width: 100px;
+  }
+
+  .main-nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    margin-top: 5px;
+  }
+
+
+  .main-nav li {
+    margin-left: 40px; /* Adjust spacing between menu items */
+  }
+
+  .logo img {
+    height: 60px;
+    width: 100px;
+  }
+</style>
     <!-- ***** Header Area Start ***** -->
     <header
-      class="header-area header-sticky wow slideInDown"
+      class="header" 
       data-wow-duration="0.75s"
       data-wow-delay="0s"
     >
+
+
       <div class="container">
         <div class="row">
-          <div class="col-12 col-sm-12 col-md-12">
+          <div class=" col-12 col-sm-12 col-md-12">
             <nav class="main-nav">
               <!-- ***** Logo Start ***** -->
               <a href="/" class="logo">
@@ -124,7 +163,7 @@
               </a>
               <!-- ***** Logo End ***** -->
               <!-- ***** Menu Start ***** -->
-              <ul class="nav">
+              <ul class="nav ">
                 <li class="scroll-to-section">
                   <a href="/" class="active">Home</a>
                 </li>
@@ -171,9 +210,7 @@
                 </li>
                 {% endif %}
               </ul>
-              <a class="menu-trigger">
-                <span>Menu</span>
-              </a>
+            
               <!-- ***** Menu End ***** -->
             </nav>
           </div>
@@ -206,11 +243,13 @@
                         SDGs are all about making the world a better place, so the participants could have each level dedicated to each goal, showcasing different tasks in  interesting levels.  It could be a great way to raise awareness and encourage positive action. Aim it and game it with the means of promoting it !
                       </p>
                     </div>
+                    {% if user.is_athenticated %}
                     <div class="col-lg-12">
                       <div class="border-first-button scroll-to-section">
                         <a href="/goals">See All Goals</a>
                       </div>
                     </div>
+                    {% endif %}
                   </div>
                 </div>
               </div>

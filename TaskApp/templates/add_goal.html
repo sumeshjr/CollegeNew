@@ -53,6 +53,7 @@
   </head>
 
   <body>
+
     <style>
       .card {
     max-width: 400px;
@@ -93,11 +94,51 @@ button:hover {
     background-color: #45a049;
 }
     </style>
+    
+     <style>
+   .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f1f1f1;
+    padding: 10px;
+  }
+
+  .main-nav {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+  }
+
+  .logo img {
+    height: 60px;
+    width: 100px;
+  }
+
+  .main-nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    margin-top: 5px;
+    margin-left: 20px;
+  }
+
+
+  .main-nav li {
+    margin-left: 80px; /* Adjust spacing between menu items */
+  }
+
+  .logo img {
+    height: 60px;
+    width: 100px;
+  }
+</style>
    
 
     <!-- ***** Header Area Start ***** -->
     <header
-      class="header-area header-sticky wow slideInDown"
+      class="header"
       data-wow-duration="0.75s"
       data-wow-delay="0s"
     >
@@ -125,6 +166,9 @@ button:hover {
                 <li class="scroll-to-section">
                   <a href="/view-goals">View Goals</a>
                 </li>
+                 <li class="scroll-to-section">
+                  <a href="/blog_list">View Blog</a>
+                </li>
 
                 <li class="scroll-to-section">
                   <div class="border-first-button">
@@ -132,9 +176,7 @@ button:hover {
                   </div>
                 </li>
               </ul>
-              <a class="menu-trigger">
-                <span>Menu</span>
-              </a>
+             
               <!-- ***** Menu End ***** -->
             </nav>
           </div>
