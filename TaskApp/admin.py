@@ -9,4 +9,7 @@ admin.site.register(Admin)
 admin.site.register(Register_table)
 admin.site.register(UserTaskImage)
 admin.site.register(Blog)
+admin.site.register(Quiz)
+admin.site.register(Question)
+admin.site.register(Answer)
 

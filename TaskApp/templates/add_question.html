@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Question</title>
+</head>
+<body>
+    <h1>Add Question</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="text">Question Text:</label><br>
+        <textarea id="text" name="text"></textarea><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

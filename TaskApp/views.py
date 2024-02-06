@@ -241,10 +241,44 @@ def goals(request):
 
     for goal in all_goals:
         tasks_for_goal = Task.objects.filter(goal=goal)
-        goals_and_tasks.append({'goal': goal, 'tasks': tasks_for_goal})
+        quizzes_for_goal = Quiz.objects.filter(goal=goal)
+        goals_and_tasks.append({'goal': goal, 'tasks': tasks_for_goal, 'quizzes': quizzes_for_goal})
 
     return render(request, 'goals.html', {'goals_and_tasks': goals_and_tasks})
 
+def quiz_detail(request, quiz_id):
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    # Fetch questions and answers related to the quiz
+    questions = quiz.questions.all()  # Assuming 'questions' is a related_name for questions in the Quiz model
+    return render(request, 'quiz_detail.html', {'quiz': quiz, 'questions': questions})
+def submit_answer(request, quiz_id):
+    if request.method == 'POST':
+        quiz = get_object_or_404(Quiz, pk=quiz_id)
+        questions = quiz.questions.all()
+        correct_answers_count = 0  # Counter to keep track of correct answers
+
+        for question in questions:
+            answer_id = request.POST.get('question_{}'.format(question.id))
+            if answer_id:
+                selected_answer = get_object_or_404(Answer, pk=answer_id)
+                if selected_answer.is_correct:
+                    correct_answers_count += 1
+
+        # Determine the message based on the number of correct answers
+        if correct_answers_count == len(questions):
+            message = "Congratulations! You got all answers correct."
+        elif correct_answers_count > 0:
+            message = "You got {} answers correct.".format(correct_answers_count)
+        else:
+            message = "Oops! You got all answers wrong. Better luck next time!"
+
+        # Render the thank you page with the appropriate message
+        return render(request, 'thank_you_page.html', {'message': message})
+    else:
+        return redirect('/') 
+
+def thank_you_page(request):
+    return render(request, 'thank_you_page.html')
 
 def registerAdmin(request):
     if request.method == 'POST':
@@ -560,3 +594,135 @@ def blog_list(request):
 def view_contacts(request):
     contacts=ContactMessage.objects.all()
     return render(request,'view_contacts.html' ,{"contacts":contacts} )
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from .models import Quiz, Question, Answer
+
+# View to add a quiz
+def add_quiz(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        goal_id = request.POST.get('goal_id')  # Assuming goal_id is provided in the form
+        goal = get_object_or_404(Goals, pk=goal_id)
+        quiz = Quiz.objects.create(title=title, description=description, goal=goal)
+        return redirect('quiz_detail', quiz_id=quiz.id)  # Redirect to quiz detail page
+    else:
+        return render(request, 'add_quiz.html')  # Render the form template
+
+# View to add a question to a quiz
+def add_question(request, quiz_id):
+    if request.method == 'POST':
+        quiz = get_object_or_404(Quiz, pk=quiz_id)
+        text = request.POST.get('text')
+        question = Question.objects.create(quiz=quiz, text=text)
+        return redirect('quiz_detail', quiz_id=quiz_id)  # Redirect to quiz detail page
+    else:
+        return render(request, 'add_question.html', {'quiz_id': quiz_id})  # Render the form template
+
+# View to add an answer to a question
+def add_answer(request, question_id):
+    if request.method == 'POST':
+        question = get_object_or_404(Question, pk=question_id)
+        text = request.POST.get('text')
+        is_correct = request.POST.get('is_correct') == 'on'  # Checkbox value
+        answer = Answer.objects.create(question=question, text=text, is_correct=is_correct)
+        return redirect('quiz_detail', quiz_id=question.quiz.id)  # Redirect to quiz detail page
+    else:
+        return render(request, 'add_answer.html', {'question_id': question_id})  # Render the form template
+
+# View to update a quiz
+def update_quiz(request, quiz_id):
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    if request.method == 'POST':
+        quiz.title = request.POST.get('title')
+        quiz.description = request.POST.get('description')
+        quiz.save()
+        return redirect('quiz_detail', quiz_id=quiz_id)  # Redirect to quiz detail page
+    else:
+        return render(request, 'update_quiz.html', {'quiz': quiz})  # Render the form template
+
+# View to delete a quiz
+def delete_quiz(request, quiz_id):
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    if request.method == 'POST':
+        quiz.delete()
+        return redirect('home')  # Redirect to home page or any other appropriate URL
+    else:
+        return render(request, 'delete_quiz.html', {'quiz': quiz})  # Render the confirmation template
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from .models import Question, Answer
+
+# View to add a question to a quiz
+def add_question(request, quiz_id):
+    if request.method == 'POST':
+        quiz = get_object_or_404(Quiz, pk=quiz_id)
+        text = request.POST.get('text')
+        question = Question.objects.create(quiz=quiz, text=text)
+        return redirect('quiz_detail', quiz_id=quiz_id)  # Redirect to quiz detail page
+    else:
+        return render(request, 'add_question.html', {'quiz_id': quiz_id})  # Render the form template
+
+# View to update a question
+def update_question(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    if request.method == 'POST':
+        question.text = request.POST.get('text')
+        question.save()
+        return redirect('quiz_detail', quiz_id=question.quiz.id)  # Redirect to quiz detail page
+    else:
+        return render(request, 'update_question.html', {'question': question})  # Render the form template
+
+# View to delete a question
+def delete_question(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    if request.method == 'POST':
+        quiz_id = question.quiz.id
+        question.delete()
+        return redirect('quiz_detail', quiz_id=quiz_id)  # Redirect to quiz detail page
+    else:
+        return render(request, 'delete_question.html', {'question': question})  # Render the confirmation template
+
+# View to add an answer to a question
+def add_answer(request, question_id):
+    if request.method == 'POST':
+        question = get_object_or_404(Question, pk=question_id)
+        text = request.POST.get('text')
+        is_correct = request.POST.get('is_correct') == 'on'  # Checkbox value
+        answer = Answer.objects.create(question=question, text=text, is_correct=is_correct)
+        return redirect('quiz_detail', quiz_id=question.quiz.id)  # Redirect to quiz detail page
+    else:
+        return render(request, 'add_answer.html', {'question_id': question_id})  # Render the form template
+
+# View to update an answer
+def update_answer(request, answer_id):
+    answer = get_object_or_404(Answer, pk=answer_id)
+    if request.method == 'POST':
+        answer.text = request.POST.get('text')
+        answer.is_correct = request.POST.get('is_correct') == 'on'
+        answer.save()
+        return redirect('quiz_detail', quiz_id=answer.question.quiz.id)  # Redirect to quiz detail page
+    else:
+        return render(request, 'update_answer.html', {'answer': answer})  # Render the form template
+
+# View to delete an answer
+def delete_answer(request, answer_id):
+    answer = get_object_or_404(Answer, pk=answer_id)
+    if request.method == 'POST':
+        quiz_id = answer.question.quiz.id
+        answer.delete()
+        return redirect('quiz_detail', quiz_id=quiz_id)  # Redirect to quiz detail page
+    else:
+        return render(request, 'delete_answer.html', {'answer': answer})  # Render the confirmation template
+
+def view_quiz(request, quiz_id):
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    return render(request, 'view_quiz.html', {'quiz': quiz})
+
+def all_quizzes(request):
+    quizzes = Quiz.objects.all()
+    return render(request, 'all_quiz.html', {'quizzes': quizzes})

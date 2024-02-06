@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ quiz.title }}</title>
+  </head>
+  <body>
+    <h1>{{ quiz.title }}</h1>
+    <p>{{ quiz.description }}</p>
+
+    <h2>Questions:</h2>
+    <ul>
+      {% for question in quiz.questions.all %}
+      <li>
+        {{ question.text }}
+        <form
+          action="{% url 'update_question' question.id %}"
+          method="get"
+          style="display: inline"
+        >
+          <button type="submit">Update</button>
+        </form>
+        <form
+          action="{% url 'delete_question' question.id %}"
+          method="post"
+          style="display: inline"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.path }}" />
+          <button type="submit">Delete</button>
+        </form>
+        <ul>
+          {% for answer in question.answers.all %}
+          <li>
+            {{ answer.text }} {% if answer.is_correct %}(Correct){% endif %}
+            <form
+              action="{% url 'update_answer' answer.id %}"
+              method="get"
+              style="display: inline"
+            >
+              <button type="submit">Update</button>
+            </form>
+            <form
+              action="{% url 'delete_answer' answer.id %}"
+              method="post"
+              style="display: inline"
+            >
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.path }}" />
+              <button type="submit">Delete</button>
+            </form>
+          </li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <form action="{% url 'add_question' quiz.id %}" method="get">
+      <button type="submit">Add Question</button>
+    </form>
+  </body>
+</html>

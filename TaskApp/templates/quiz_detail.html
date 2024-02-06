@@ -230,116 +230,58 @@
     </header>
     <!-- ***** Header Area End ***** -->
 
-    <div
-      class="main-banner wow fadeIn"
-      id="top"
-      data-wow-duration="1s"
-      data-wow-delay="0.5s"
-    >
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="row">
-              <div class="col-lg-6 align-self-center">
-                <div
-                  class="left-content show-up header-text wow fadeInLeft"
-                  data-wow-duration="1s"
-                  data-wow-delay="1s"
-                >
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <h6>SDG QUEST</h6>
-                      <h2>The Power of Sustainable Development Goals</h2>
-                      <p>
-                        SDGs are all about making the world a better place, so
-                        the participants could have each level dedicated to each
-                        goal, showcasing different tasks in interesting levels.
-                        It could be a great way to raise awareness and encourage
-                        positive action. Aim it and game it with the means
-                        of promoting it !
-                      </p>
+    <style>
+        .custom-select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa; /* Light gray background */
+    border: 1px solid #ced4da; /* Gray border */
+}
+
+/* Style for the select arrow */
+.custom-select::after {
+    content: '\25BC'; /* Unicode character for downward arrow */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none; /* Make sure the arrow is not clickable */
+}
+    </style>
+<body>
+    <br>
+    <center>
+    <div class="card" style="width: 500px; height: auto;">
+
+
+   
+    <div class="container">
+        <h1 class="mt-4">{{ quiz.title }}</h1>
+        <p class="lead">Description: {{ quiz.description }}</p>
+
+        <form action="{% url 'submit_answer' quiz.id %}" method="post">
+            {% csrf_token %}
+            <h2 class="mt-4">Questions:</h2>
+            {% for question in questions %}
+                <div class="card my-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ question.text }}</h5>
+                       <select class="custom-select" id="question_{{ question.id }}" name="question_{{ question.id }}">
+                        <option selected disabled>Select an answer...</option>
+                        {% for answer in question.answers.all %}
+                            <option value="{{ answer.id }}">{{ answer.text }}</option>
+                        {% endfor %}
+                    </select>
                     </div>
-                    {% if user.is_athenticated %}
-                    <div class="col-lg-12">
-                      <div class="border-first-button scroll-to-section">
-                        <a href="/goals">See All Goals</a>
-                      </div>
-                    </div>
-                    {% endif %}
-                  </div>
                 </div>
-              </div>
-              <div class="col-lg-6">
-                <div
-                  class="right-image wow fadeInRight"
-                  data-wow-duration="1s"
-                  data-wow-delay="0.5s"
-                >
-                  <img src="{% static 'images/SDGS-1 (1).jpg' %}" alt="" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-outline-success">Submit Answers</button>
+        </form>
+        <br>
     </div>
-
-    {% if user.is_authenticated %}
-    <div id="blog" class="blog">
-      <div class="container">
-        <div class="row">
-          <div
-            class="col-lg-4 offset-lg-4 wow fadeInDown"
-            data-wow-duration="1s"
-            data-wow-delay="0.3s"
-          >
-            <div class="section-heading">
-              <h6>Recent News</h6>
-              <h4>Check Our Blog <em>Posts</em></h4>
-              <div class="line-dec"></div>
-            </div>
-          </div>
-
-          {% for blog in blogs %}
-          <div
-            class="col-lg-6 show-up wow fadeInUp"
-            data-wow-duration="1s"
-            data-wow-delay="0.3s"
-          >
-            <div class="blog-post">
-              <div class="down-content">
-                <span class="category">{{ blog.title }}</span>
-
-                <h4>{{ blog.description }}</h4>
-                <span class="author"
-                  ><img src="assets/images/author-post.jpg" alt="" /> by -
-                  {{blog.author }}</span
-                >
-              </div>
-            </div>
-          </div>
-          {% endfor %}
         </div>
-      </div>
-    </div>
-
-    {% endif %}
-
-    <!-- Scripts -->
-    <script src="{% static 'js/animation.js' %}"></script>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.bundle.min.js.map' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/custom.js' %}"></script>
-    <script src="{% static 'js/imagesloaded.js' %}"></script>
-    <script src="{% static 'js/isotope.js' %}"></script>
-    <script src="{% static 'js/jquery.js' %}"></script>
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/jquery.min.map' %}"></script>
-    <script src="{% static 'js/jquery.slim.js' %}"></script>
-    <script src="{% static 'js/jquery.slim.min.js' %}"></script>
-    <script src="{% static 'js/jquery.slim.min.map' %}"></script>
-    <script src="{% static 'js/owl-carousel.js' %}"></script>
-    <script src="{% static 'js/tabs.js' %}"></script>
+        <br>
+        </center>
   </body>
 </html>

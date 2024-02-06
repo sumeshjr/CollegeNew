@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Answer</title>
+  </head>
+  <body>
+    <h1>Add Answer</h1>
+    <form method="post">
+      {% csrf_token %}
+      <label for="text">Answer Text:</label><br />
+      <input type="text" id="text" name="text" /><br />
+      <input type="checkbox" id="is_correct" name="is_correct" />
+      <label for="is_correct">Is Correct</label><br />
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

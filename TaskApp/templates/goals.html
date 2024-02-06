@@ -262,8 +262,16 @@
                                                                             {% endif %}
                                                                         </p>
                                                                     </div>
+                                                                     {% if goal_data.quizzes %}
+                                                                    <p>
+                                                                        <a class="quiz-button"
+                                                                            href="{% url 'quiz_detail' goal_data.quizzes.0.id %}">Complete
+                                                                            Quiz</a>
+                                                                    </p>
+                                                                    {% endif %}
                                                                     {% endfor %}
                                                                 </div>
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>
@@ -279,21 +287,13 @@
             </div>
             <br>
         </div>
+
+        
     </div>
     </div>
     <br>
 
-        <div class="row">
-            <center>
-                <div class="container">
-                    <div class="col-lg-12 d-flex flex-column">
-                        <div class="image">
-                            <img src="{% static 'images/goal.jpg' %}" alt="" style="width: 800px; height: 800px;" />
-                        </div>
-                    </div>
-                </div>
-            </center>
-        </div>
+        
     </div>
 </div>
 
